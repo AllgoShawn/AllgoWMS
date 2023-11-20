@@ -1,0 +1,140 @@
+<div bsModal #createWarehouseMaster="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createWarehouseMaster" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #createWarehouseForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span> {{"Create Warehouse Master" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                        [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <tabset>
+                        <tab heading="{{'Warehouse Detail' | localize}}">
+                            <form class="kt-form">
+                               <div class="form-group">
+                                    <label>{{ "Warehouse Code" | localize}}</label>
+                                    <input id="whseCode" class="form-control" type="text" name="whseCode"  required maxlength="30">
+                               </div>
+                            </form>
+                            <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Warehouse Name" | localize}}</label>
+                                     <input id="whseName" class="form-control" type="text" name="whseName"  required maxlength="100">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Status" | localize}}</label>
+                                     <p-dropdown name="whseStatus"
+                                     [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
+                                     [virtualScroll]="true" [style]="{'width':'100%'}">
+                                     </p-dropdown>
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Remarks" | localize}}</label>
+                                     <input id="whseRemarks" class="form-control" type="text" name="whseRemarks"  required maxlength="200">
+                                </div>
+                             </form>
+                        </tab>
+                        <tab heading="{{'Warehouse Address' | localize}}">
+                            <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Address" | localize}}</label>
+                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Address 1" | localize}}</label>
+                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Address 2" | localize}}</label>
+                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "City" | localize}}</label>
+                                     <input id="whseCity" class="form-control" type="text" name="whseCity"  required maxlength="50">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "State" | localize}}</label>
+                                     <input id="whseState" class="form-control" type="text" name="whseState"  required maxlength="50">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Country" | localize}}</label>
+                                     <input id="whseCountry" class="form-control" type="text" name="whseCountry"  required maxlength="30">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "ZIP" | localize}}</label>
+                                     <input id="whseZip" class="form-control" type="text" name="whseZip"  required maxlength="20">
+                                </div>
+                             </form>
+                        </tab>
+                        <tab heading="{{'Warehouse Contact' | localize}}">
+                            <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Contact Title" | localize}}</label>
+                                     <input id="whseContactTitle" class="form-control" type="text" name="whseContactTitle"  required maxlength="50">
+                                </div>
+                             </form>
+                            <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Contact Person" | localize}}</label>
+                                     <input id="whseContactPerson" class="form-control" type="text" name="whseContactPerson"  required maxlength="50">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Phone Number" | localize}}</label>
+                                     <input id="whsePhoneNo" class="form-control" type="text" name="whsePhoneNo"  required maxlength="50">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Fax" | localize}}</label>
+                                     <input id="whseFax" class="form-control" type="text" name="whseFax"  required maxlength="50">
+                                </div>
+                             </form>
+                             <form class="kt-form">
+                                <div class="form-group">
+                                     <label>{{ "Email" | localize}}</label>
+                                     <input id="whseEmail" class="form-control" type="text" name="whseEmail"  required maxlength="100">
+                                </div>
+                             </form>
+                        </tab>    
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" [disabled]="saving" class="btn btn-secondary"
+                        (click)="close()">{{"Cancel" | localize}}</button>
+                    <button  type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                        class="btn btn-primary"
+                        (click)="save()"
+                        [disabled]="!createWarehouseForm.form.valid || saving ">
+                        <i class="fa fa-save"></i> 
+                        <span>{{"Save" | localize}}</span>
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

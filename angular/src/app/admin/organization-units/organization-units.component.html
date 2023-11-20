@@ -1,0 +1,68 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"OrganizationUnits" | localize}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{"OrganizationUnitsHeaderInfo" | localize}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!--<organization-tree #ouTree (ouSelected)="ouSelected($event)"></organization-tree>-->
+                    <organization-list #ouList (ouSelected)="ouSelected($event)"></organization-list>
+                </div>
+                <div class="col-lg-6">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    <span *ngIf="organizationUnit">{{organizationUnit.displayName}}</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <tabset class="tab-container">
+                                <tab [active]="warehouseActive">
+                                    <ng-template tabHeading>
+                                        <span (click)="resetTab()">{{'Warehouses' | localize}}</span>
+                                    </ng-template>
+                                    <organization-unit-warehouses #ouWarehouses 
+                                        (warehouseAdded)="ouList.reload()"
+                                        (warehouseEdited)="ouList.reload()"
+                                        (warehouseRemoved)="ouList.reload()"
+                                        (navigatedToWorkZone)="switchTab($event)"></organization-unit-warehouses>
+                                </tab>
+                                <tab heading="{{'WorkZones' | localize}}" [active]="workZoneActive">
+                                    <organization-unit-workzones #ouWorkZones></organization-unit-workzones>
+                                </tab>
+                                <!--
+                                <tab heading="{{'Members' | localize}}" [active]="true">
+                                    <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)"
+                                        (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
+                                </tab>
+                                <tab heading="{{'Roles' | localize}}">
+                                    <organization-unit-roles #ouRoles (rolesAdded)="ouTree.rolesAdded($event)"
+                                        (roleRemoved)="ouTree.roleRemoved($event)"></organization-unit-roles>
+                                </tab>
+                                -->
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+</script>

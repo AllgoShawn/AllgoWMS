@@ -1,0 +1,70 @@
+<div bsModal #createOrderModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" 
+    aria-labelledby="createOrderModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #createOrderForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span *ngIf="orderDataInput.id">{{"Edit" | localize}}: {{orderDataInput.orderNo}}</span>
+                    <span *ngIf="!orderDataInput.id"> {{"Create Order" | localize}}</span>
+                </h5>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                    [disabled]="saving">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                    <!--
+                    <div class="form-group">
+                        <label>{{ "ASN Number" | localize}}</label>
+                        <input name="asnNo" class="form-control" [(ngModel)]="asnDataInput.asnNo" type="text">
+                    </div>
+                    -->
+                    <div class="form-group">
+                        <label>{{ "Transfer From" | localize}}</label>
+                        <p-dropdown 
+                        name="ddlTransferFromFormat" [options]="transferFromList" [(ngModel)]="orderDataInput.warehouseId" [filter]="true" 
+                        [virtualScroll]="true" [style]="{'width':'100%'}" (onChange)="TransferFromSelect()">
+                        </p-dropdown>
+                        <span *ngIf="!orderDataInput.warehouseId && transferFromSelect" class="has-danger form-control-feedback">This field is required.</span>
+                        <span *ngIf="orderDataInput.warehouseId && orderDataInput.warehouseId == orderDataInput.consigneeId" class="has-danger form-control-feedback">Transfer From Location cannot be same as Transfer To Location.</span>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Transfer To" | localize}}</label>
+                        <p-dropdown 
+                        name="ddlTransferToFormat" [options]="transferToList" [(ngModel)]="orderDataInput.consigneeId" [filter]="true" 
+                        [virtualScroll]="true" [style]="{'width':'100%'}" (onChange)="TransferToSelect()">
+                        </p-dropdown>
+                        <span *ngIf="!orderDataInput.consigneeId && transferToSelect" class="has-danger form-control-feedback">This field is required.</span>
+                        <span *ngIf="orderDataInput.consigneeId && orderDataInput.warehouseId == orderDataInput.consigneeId" class="has-danger form-control-feedback">Transfer From Location cannot be same as Transfer To Location.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="DeliveryDate">{{ "Delivery Date" | localize}}</label>
+                        <input name="txtDeliveryDate" class="form-control" #txtDeliveryDate="ngModel" [(ngModel)]="deliveryDate" readonly="readonly" bsDatepicker required>
+                        <validation-messages [formCtrl]="txtDeliveryDate"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label for="CarrierName">{{ "Carrier Name" | localize}}</label>
+                        <p-dropdown 
+                        name="ddlCarrierName" [options]="carrierList" [(ngModel)]="orderDataInput.carrierName" [filter]="true" 
+                        [virtualScroll]="true" [style]="{'width':'100%'}" (onChange)="CarrierSelect()">
+                        </p-dropdown>
+                        <span *ngIf="!orderDataInput.carrierName && carrierSelect" class="has-danger form-control-feedback">This field is required.</span>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="saving" class="btn btn-secondary"
+                    (click)="close()">{{"Cancel" | localize}}</button>
+                <button type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="save()"
+                    [disabled]="!createOrderForm.form.valid || saving || !orderDataInput.carrierName || !orderDataInput.warehouseId || !orderDataInput.consigneeId || orderDataInput.warehouseId == orderDataInput.consigneeId">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Save" | localize}}</span>
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

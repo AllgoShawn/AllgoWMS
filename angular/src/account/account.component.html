@@ -1,0 +1,39 @@
+<div [ngClass]="{'kt-grid kt-grid--ver kt-grid--root': !useFullWidthLayout(), 'kt-content': useFullWidthLayout() }" [style.text-align]="useFullWidthLayout() ? 'center' : 'left'" >
+    <div [ngClass]="{'kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1': !useFullWidthLayout(), 'row':useFullWidthLayout()}" id="kt_login" >
+        <div [ngClass]="{'kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile': !useFullWidthLayout(), 'col-md-12': useFullWidthLayout()}"  style="background-image: url('/assets/metronic/common/images/bg/bg6.jpg'); background-size: cover; ">
+            <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" *ngIf="1 == 2" >
+                <!--
+                <div class="kt-grid__item">
+                    <a (click)="goToHome()" href="">    
+                        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-dark.svg'" alt="logo" height="38" />
+                        <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" />
+                    </a>
+                </div>
+                -->
+            </div>
+
+            <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1 kt-login__wrapper d-block" style="background:rgba(0,0,0,0); margin-top:auto; margin-bottom:auto;">
+                
+                <!--
+                <div class="kt-login__head d-block mt-3 mr-auto ml-auto text-right">
+                    <language-switch></language-switch>
+                </div>
+                -->
+                
+                <div class="kt-login__body d-block ml-auto mr-auto" style="width:800px; height:720px; background:rgba(0,0,0,0.5); padding: 50px;">
+                    <img [src]="appRootUrl() + 'assets/common/images/octopus.png'" alt="logo" height="100" style="display: block; margin-left:auto; margin-right:auto" />
+                    <br>
+                    <div *ngIf="showTenantChange()" class="kt-login__signup-label tenant-change-box text-center" >
+                        <tenant-change></tenant-change>
+                    </div>
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    svg {
+        background-color: 0,0,0,0;
+    }
+</style>

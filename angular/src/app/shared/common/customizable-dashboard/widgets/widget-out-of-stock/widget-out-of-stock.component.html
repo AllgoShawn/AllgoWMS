@@ -1,0 +1,58 @@
+<div class="kt-portlet m-portlet--full-height">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title flex-column-dashboard">
+                <span class="card-label fw-bold text-dark">{{"Out of Stock Report" | localize}}</span><br>
+                <span class="text-grey mt-1 fw-semibold">{{"Total " | localize}}</span>
+                <span class="text-grey mt-1 fw-semibold" *ngIf="outofStockTable.stats">{{outofStockTable.stats.length}} </span> 
+                <!-- <span class="text-grey mt-1 fw-semibold" *ngIf="stat.length <= 0">{{0}} </span>  -->
+                <span class="text-grey mt-1 fw-semibold">{{"Items Out of Stock" | localize}}</span>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <div class="d-flex-1 flex-stack align-items-start gap-4 ">
+                <div class="d-flex-1 align-items-center-1 fw-bold">
+                    <div class="text-muted-dashboard fs-7 ">
+                        {{"Category" | localize}}
+                    </div>
+                    <select class="form-select text-dark fs-7 fw-bold  " data-control="select2" data-hide-search="true" data-dropdown-css-class="min-w-100" data-placeholder="Select an option" data-select2-id="select2-data-13-geu2">
+                        <option class="selection">{{"Show All" | localize}}</option>
+                    </select>
+                </div>
+                <div >
+                    <button class="btn-dashboard " (click)="navigateToInventory()">{{"View Stock" | localize}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body" [perfectScrollbar]>
+        <div id="out_of_stock_content">
+            <div class="table-responsive">
+                <!--begin::Table-->
+                <table class="table align-middle ">
+                    <!--begin::Thead-->
+                    <thead>
+                        <tr class="text-start text-grey fw-bold fs-7 text-uppercase">
+                            <td class="min-w-50">{{"SKU" | localize}}</td>
+                            <td class="text-end min-w-100">{{"Description" | localize}}</td>
+                            <td class="m-widget8__lastmvdt">{{"Last Move Date" | localize}}</td>
+                            <td class="m-widget8__qty">{{"Quantity" | localize}}</td>
+                            <td class="m-widget8__status">{{"Status" | localize}}</td>
+                        </tr>
+                    </thead>
+                    <!--end::Thead-->
+                    <!--begin::Tbody-->
+                    <tbody>
+                        <tr *ngFor="let stat of outofStockTable.stats; let index = index">
+                            <td>{{stat.sku}}</td>
+                            <td>{{stat.itemDesc}}</td>
+                            <td>{{stat.lstMvDt | date:'yyyy-MM-dd'}}</td>
+                            <td>{{stat.qty}} PCS</td>
+                            <td>{{stat.status}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

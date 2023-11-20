@@ -1,0 +1,51 @@
+<div bsModal #addWorkZoneModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addWorkZoneModal"
+     aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span *ngIf="workZone.id">{{"Edit" | localize}}: {{workZone.code}}</span>
+                        <span *ngIf="!workZone.id">{{"New WorkZone" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <label for="WorkZoneCode">{{"WorkZone ID" | localize}} *</label>
+                        <input id="workZoneCode" #workZoneCode="ngModel" class="form-control" type="text" name="workZoneCode" [ngClass]="{'edited': workZone.code}" [(ngModel)]="workZone.code" required maxlength="128">
+                        <validation-messages [formCtrl]="workZoneCode"></validation-messages>
+                    </div>
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <label for="WorkZoneType">{{"Type" | localize}} *</label>
+                        <p-dropdown [options]="workZoneTypeList" [(ngModel)]="selectedWorkZoneType" name="ddlworkZoneType" [filter]="true" 
+                        [virtualScroll]="true" [style]="{'width':'100%'}">
+                        </p-dropdown>
+                    </div>
+                    <div  class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <label for="Warehouse">{{"Warehouse" | localize}} *</label>
+                        <input *ngIf="hasWarehouseId" name="txtWarehouse" class="form-control" [(ngModel)]="warehouseValue" type="text" readonly="readonly" >
+                        <p-dropdown *ngIf="!hasWarehouseId" [options]="warehouseList" [(ngModel)]="selectedWarehouse" name="ddlWarehouse" [filter]="true" 
+                        [virtualScroll]="true" [style]="{'width':'100%'}">
+                        </p-dropdown>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

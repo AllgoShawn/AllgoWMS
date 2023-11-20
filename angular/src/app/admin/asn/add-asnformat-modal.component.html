@@ -1,0 +1,58 @@
+<div bsModal #addASNFormatModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" 
+    aria-labelledby="addASNFormatModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #addASNFormatForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span *ngIf="asnFormatInput.id">{{"Edit" | localize}}: {{asnFormatInput.prefix}}</span>
+                    <span *ngIf="!asnFormatInput.id"> {{"Add ASN Format" | localize}}</span>
+                </h5>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                    [disabled]="saving">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>{{ "Prefix" | localize}}</label>
+                        <input name="txtPrefix" class="form-control" [(ngModel)]="asnFormatInput.prefix" type="text" (input)="generateExample()">
+                    </div>
+                    <div class="form-group">
+                        <label for="asn_number_configuration" class="kt-checkbox">
+                            <input id="asn_number_configuration" type="checkbox"
+                                name="asn_number_configuration"
+                                (change)="generateExample()"
+                                [(ngModel)]="hasDate">
+                            {{"Add date format on ASN Number" | localize}}
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Formatted ASN Number" | localize}}</label>
+                        <input name="txtFormattedASNNo" class="form-control" [(ngModel)]="formattedASNNo" type="text" readonly="true">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="saving" class="btn btn-secondary"
+                    (click)="close()">{{"Cancel" | localize}}</button>
+                <button *ngIf="!asnFormatInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="save()"
+                    [disabled]="!addASNFormatForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Save" | localize}}</span>
+                </button>
+                <button *ngIf="asnFormatInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="update()"
+                    [disabled]="!addASNFormatForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Edit" | localize}}</span>
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,192 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <button type="button" class="fa fa-angle-left close mr-2" (click)="back()" >
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Inventory By SKU" | localize}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <div class="row mb-2">
+                        <div class="col-sm-12 text-right">
+
+                            <button type="button" class="btn btn-success" (click)="exportToExcel()"><i
+                                class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+
+                            <button type="button" class="btn btn-primary" (click)="getInventoryDatas()"><i
+                                class="fa fa-sync"></i> {{"Refresh" | localize}}</button>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-12">
+                            <div class="form-group m-form__group align-items-center">
+                                <div class="input-group">
+                                    <input [(ngModel)]="filterText" name="filterText" autoFocus (keyup.enter)="getInventoryDatas()"
+                                        class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                        type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="getInventoryDatas()" class="btn btn-primary" type="submit"><i
+                                                class="flaticon-search-1"
+                                                [attr.aria-label]="l('Search')"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-form">
+                        <form #filterForm="ngForm" (ngSubmit)="getInventoryDatas()">
+                            <div class="row align-items-center mb-2">
+                            </div>
+
+                            <div *ngIf="advancedFiltersAreShown" class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="SKU">{{"SKU" | localize}}</label>
+                                        <input id="SKU" type="text" name="SKU" (keyup.enter)="getInventoryDatas()"
+                                            class="form-control" [(ngModel)]="skuFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="WarehouseId">{{"Warehouse" | localize}}</label>
+                                        <input id="WarehouseId" type="text" name="WarehouseId" (keyup.enter)="getInventoryDatas()"
+                                            class="form-control" [(ngModel)]="warehouseFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Status">{{"Status" | localize}}</label>
+                                        <p-dropdown name="statusType" (onChange)="getInventoryDatas()"
+                                        [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
+                                        [virtualScroll]="true" [style]="{'width':'100%'}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ "Min Quantity" | localize}}</label>
+                                            <input id="MinQuantity" type="number" min="0" name="MinQuantity" (keyup.enter)="getInventoryDatas()"
+                                                class="form-control" [(ngModel)]="minQtyFilter">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div  class="form-group">
+                                            <label>{{ "Max Quantity" | localize}}</label>
+                                            <input id="MaxQuantity" type="number" min="0" name="MaxQuantity" (keyup.enter)="getInventoryDatas()"
+                                                class="form-control" [(ngModel)]="maxQtyFilter">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i>
+                                        {{"ShowAdvancedFilters" | localize}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i>
+                                        {{"HideAdvancedFilters" | localize}}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getInventoryDatas($event)"
+                                [value]="primengTableHelper.records"
+                                selectionMode="single"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                [paginator]="false" [lazy]="true" scrollable="true" ScrollWidth="100%"
+                                responsive="primengTableHelper.isResponsive"
+                                resizableColumns="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 150px" pSortableColumn="sku">
+                                            {{'SKU' | localize}}
+                                            <p-sortIcon field="sku"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="warehouseId">
+                                            {{'Warehouse' | localize}}
+                                            <p-sortIcon field="warehouseId"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="qcStatus">
+                                            {{'Status' | localize}}
+                                            <p-sortIcon field="qcStatus"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="qty">
+                                            {{'Quantity' | localize}}
+                                            <p-sortIcon field="qty"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="noteText">
+                                            {{'Information' | localize}}
+                                            <p-sortIcon field="noteText"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr [pSelectableRow]="record">
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'SKU' | localize}}</span>
+                                            {{record.sku}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Warehouse' | localize}}</span>
+                                            {{record.warehouseId}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Status' | localize}}</span>
+                                            {{record.qcStatus}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Quantity' | localize}}</span>
+                                            {{record.qty}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Information' | localize}}</span>
+                                            {{record.noteText}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data"
+                                *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    #paginator (onPageChange)="getInventoryDatas($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<div bsModal #addLineItemModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" 
+    aria-labelledby="addLineItemModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #addLineItemForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span *ngIf="lineItemDataInput.id"> {{"Edit Case" | localize}}: {{lineItemDataInput.containerId}}</span>
+                    <span *ngIf="!lineItemDataInput.id"> {{"Add Case" | localize}}</span>
+                </h5>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                    [disabled]="saving">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group m-form__group">
+                            <label>{{ "Item Number" | localize}}</label>
+                            <input *ngIf="lineItemDataInput.id" name="txtItemNumber" class="form-control" [(ngModel)]="lineItemDataInput.sku" type="text" readonly="readonly">
+                            <p-dropdown *ngIf="!lineItemDataInput.id" name="itemNumber"
+                            [options]="itemNumbers" [(ngModel)]="selectedItem" [filter]="true" 
+                            (onChange)="fillItemInfo()"
+                            [virtualScroll]="true" [style]="{'width':'100%'}" [required]="true">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ "Description" | localize}}</label>
+                            <input name="description" class="form-control" [(ngModel)]="lineItemDataInput.skuDescr" type="text" readonly="true"  required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="POQty">{{ "PO Qty" | localize}}</label>
+                            <input name="poQty" class="form-control" #pOQty="ngModel" min="0" [(ngModel)]="lineItemDataInput.expectedQty" type="number" readonly="true" required>
+                            <validation-messages [formCtrl]="pOQty"></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ASNOpenQty">{{ "ASN Open Qty" | localize}}</label>
+                            <input name="openedQty" class="form-control" #aSNOpenQty="ngModel" min="0" [(ngModel)]="lineItemDataInput.openedQty" type="number" readonly="true" required>
+                            <validation-messages [formCtrl]="aSNOpenQty"></validation-messages>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ShippedQty">{{ "Shipped Qty" | localize}}</label>
+                            <input name="shippedQty" class="form-control" #shippedQty="ngModel" min="0" [(ngModel)]="lineItemDataInput.shippedQty" type="number" readonly="true" required>
+                            <validation-messages [formCtrl]="shippedQty"></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="!lineItemDataInput.id" class="col-md-6">
+                        <div class="form-group">
+                            <label for="TotalCaseNo">{{ "No. of Case" | localize}}</label>
+                            <input name="totalCaseNo" class="form-control" #totalCaseNo="ngModel" min="1" [(ngModel)]="lineItemDataInput.containerQty" type="number" required>
+                            <validation-messages [formCtrl]="totalCaseNo"></validation-messages>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ASNQty">{{ "Quantity / Case" | localize}}</label>
+                            <input name="asnQty" class="form-control" #aSNQty="ngModel" min="0" [(ngModel)]="lineItemDataInput.orderedQty" type="number" required>
+                            <validation-messages [formCtrl]="aSNQty"></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ "Lot Number" | localize}}</label>
+                            <input name="lotNumber" class="form-control" [(ngModel)]="lineItemDataInput.lotAtt01" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ "Expiry Date" | localize}}</label>
+                            <input name="expiryDate" class="form-control" [(ngModel)]="expiryDate" readonly="readonly" bsDatepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="saving" class="btn btn-secondary"
+                    (click)="close()">{{"Cancel" | localize}}</button>
+                <button *ngIf="!this.lineItemDataInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="save()"
+                    [disabled]="!addLineItemForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Save" | localize}}</span>
+                </button>
+                <button *ngIf="this.lineItemDataInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="update()"
+                    [disabled]="!addLineItemForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Edit" | localize}}</span>
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

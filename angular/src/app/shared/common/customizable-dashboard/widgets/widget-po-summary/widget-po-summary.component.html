@@ -1,0 +1,85 @@
+<div class="kt-portlet kt-portlet--height-fluid">
+    <div class="kt-portlet__body kt-portlet__body--fit" [perfectScrollbar]>
+        <div class="row row-no-padding row-col-separator-xl">
+            <div *ngIf="poSummaryTable.poSummary" class="col-md-12 col-lg-6 col-xl-3">
+                <div class="kt-widget24">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                Total Open PO
+                            </h4>
+                        </div>
+                        <span class="kt-widget24__stats kt--font-brand">
+                            <span counto [step]="30" [duration]="1" [countFrom]="0"
+                            [countTo]="poSummaryTable.poSummary[0].totalOpenPO">
+                                {{poSummaryTable.poSummary[0].totalOpenPO.toFixed(0)}}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-brand" role="progressbar"  [style.width.%]="poSummaryTable.poSummary[0]?.percentTotalOpenPO?.toFixed(0) || 0"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="kt-widget24__action">
+                        <span class="kt-widget24__number">
+                            <span class="counterup">{{poSummaryTable.poSummary[0].percentTotalOpenPO.toFixed(0)}}</span>%
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="poSummaryTable.poSummary" class="col-md-12 col-lg-6 col-xl-3">
+                <div class="kt-widget24">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                Total Open Line
+                            </h4>
+                        </div>
+                        <span class="kt-widget24__stats kt--font-brand">
+                            <span counto [step]="30" [duration]="1" [countFrom]="0"
+                            [countTo]="poSummaryTable.poSummary[0].totalOpenLine">
+                                {{poSummaryTable.poSummary[0].totalOpenLine.toFixed(0)}}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-brand" role="progressbar"  [style.width.%]="poSummaryTable.poSummary[0]?.percentTotalOpenLine?.toFixed(0) || 0"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="kt-widget24__action">
+                        <span class="kt-widget24__number">
+                            <span class="counterup">{{poSummaryTable.poSummary[0].percentTotalOpenLine.toFixed(0)}}</span>%
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div *ngIf="poSummaryTable.poSummary" class="col-md-12 col-lg-6 col-xl-3">
+                <div class="kt-widget24">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                Total Open Quantity
+                            </h4>
+                        </div>
+                        <span class="kt-widget24__stats kt--font-brand">
+                            <span counto [step]="30" [duration]="1" [countFrom]="0"
+                            [countTo]="poSummaryTable.poSummary[0].totalOpenQty">
+                                {{poSummaryTable.poSummary[0].totalOpenQty.toFixed(0)}}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-brand" role="progressbar"  [style.width.%]="poSummaryTable.poSummary[0]?.percentTotalOpenQty?.toFixed(0) || 0"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="kt-widget24__action">
+                        <span class="kt-widget24__number">
+                            <span class="counterup">{{poSummaryTable.poSummary[0].percentTotalOpenQty.toFixed(0)}}</span>%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

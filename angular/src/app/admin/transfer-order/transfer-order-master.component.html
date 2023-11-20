@@ -1,0 +1,224 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Transfer Order List" | localize}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <div class="row mb-2">
+                        <div class="col-sm-12 text-right">
+
+                            <button type="button" class="btn btn-success" (click)="exportToExcel()"><i
+                                class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+
+                            <button type="button" class="btn btn-primary" (click)="createOrder()"><i
+                                class="fa fa-plus"></i> {{"Create Order" | localize}}</button> 
+
+                            <button type="button" class="btn btn-primary" (click)="getOrderDatas()"><i
+                                class="fa fa-sync"></i> {{"Refresh" | localize}}</button>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-12">
+                            <div class="form-group m-form__group align-items-center">
+                                <div class="input-group">
+                                    <input [(ngModel)]="filterText" name="filterText" autoFocus (keyup.enter)="getOrderDatas()"
+                                        class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                        type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="getOrderDatas()" class="btn btn-primary" type="submit"><i
+                                                class="flaticon-search-1"
+                                                [attr.aria-label]="l('Search')"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-form">
+                        <form #filterForm="ngForm" (ngSubmit)="getOrderDatas()">
+                            <div class="row align-items-center mb-2">
+                            </div>
+
+                            <div *ngIf="advancedFiltersAreShown" class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="OrderNumber">{{"Order No." | localize}}</label>
+                                        <input id="OrderNumber" type="text" name="OrderNumber" (keyup.enter)="getOrderDatas()"
+                                            class="form-control" [(ngModel)]="orderNoFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="TransferFrom">{{"Transfer From" | localize}}</label>
+                                        <input id="TransferFrom" type="text" name="TransferFrom" (keyup.enter)="getOrderDatas()"
+                                            class="form-control" [(ngModel)]="transferFromFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="TransferTo">{{"Transfer To" | localize}}</label>
+                                        <input id="TransferTo" type="text" name="TransferTo" (keyup.enter)="getOrderDatas()"
+                                            class="form-control" [(ngModel)]="transferToFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>{{ "Status" | localize}}</label>
+                                        <p-dropdown name="statusType" (onChange)="getOrderDatas()" 
+                                        [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
+                                        [virtualScroll]="true" [style]="{'width':'100%'}">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="StartEndRange">{{"DeliveryDate" | localize}}</label>
+                                        <input class="form-control" id="StartEndRange" name="StartEndRange"
+                                            #drp="bsDaterangepicker" readonly="readonly" bsDaterangepicker
+                                            dateRangePickerMomentModifier [(date)]="dateFilter" (bsValueChange)="getOrderDatas()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i>
+                                        {{"ShowAdvancedFilters" | localize}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i>
+                                        {{"HideAdvancedFilters" | localize}}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getOrderDatas($event)"
+                                [value]="primengTableHelper.records"
+                                selectionMode="single"
+                                (onRowSelect)="nodeSelect($event)"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                [paginator]="false" [lazy]="true" scrollable="true" ScrollWidth="100%"
+                                responsive="primengTableHelper.isResponsive"
+                                resizableColumns="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:150px">
+                                            {{'Action' | localize}}
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="orderNo">
+                                            {{'Order No.' | localize}}
+                                            <p-sortIcon field="orderNo"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="warehouseId">
+                                            {{'Transfer From' | localize}}
+                                            <p-sortIcon field="warehouseId"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="consigneeId">
+                                            {{'Transfer To' | localize}}
+                                            <p-sortIcon field="consigneeId"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="carrierName">
+                                            {{'Driver' | localize}}
+                                            <p-sortIcon field="carrierName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="requiredDeliveryTime">
+                                            {{'Delivery Time' | localize}}
+                                            <p-sortIcon field="requiredDeliveryTime"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="soStatus">
+                                            {{'Status' | localize}}
+                                            <p-sortIcon field="soStatus"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr [pSelectableRow]="record">
+                                        <td style="width: 150px">
+                                            <div class="btn-group dropdown" style="width: 100%;" dropdown container="body">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{"Action" | localize}}
+                                                </button>
+                                                <div *ngIf="record.soStatus === 'Pending'">
+                                                    <ul class="dropdown-menu dropdown-menu-md" *dropdownMenu>
+                                                        <li>
+                                                            <a href="javascript:;" (click)="transferItem(record.id, record.orderNo)"><i class="la la-upload"></i>{{'Transfer' | localize}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div *ngIf="record.soStatus != 'Pending'">
+                                                    <ul class="dropdown-menu dropdown-menu-md" *dropdownMenu>
+                                                        <li class="readonly">
+                                                            <a class="readonly-color" href="javascript:;" (click)="transferItem(record.id, record.orderNo)"><i class="la la-upload"></i>{{'Transfer' | localize}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Order No.' | localize}}</span>
+                                            {{record.orderNo}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Transfer From' | localize}}</span>
+                                            {{record.warehouseId}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Transfer To' | localize}}</span>
+                                            {{record.consigneeId}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Driver' | localize}}</span>
+                                            {{record.carrierName}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Delivery Time' | localize}}</span>
+                                            {{ record.requiredDeliveryTime  | momentFormat:'YYYY-MM-DD HH:mm:ss'}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{'Status' | localize}}</span>
+                                            {{record.soStatus}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data"
+                                *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    #paginator (onPageChange)="getOrderDatas($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrderModal #createOrderModal (modalSave)="getOrderDatas()" ></createOrderModal>
+</div>

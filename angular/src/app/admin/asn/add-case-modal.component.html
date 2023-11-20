@@ -1,0 +1,143 @@
+<div bsModal #addCaseModal="bs-modal" (onShown)="onShown()"  class="modal fade" tabindex="-1" role="dialog" 
+    aria-labelledby="addCaseModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #addCaseForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span *ngIf="this.caseDataInput.id">{{"Edit" | localize}}: {{caseDataInput.ctnNo}}</span>
+                    <span *ngIf="!this.caseDataInput.id"> {{"Add Loose Case" | localize}}</span>
+                </h5>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                    [disabled]="saving">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>{{ "Case Type" | localize}}</label>
+                    <p-dropdown name="caseType"
+                    [options]="caseTypes" [(ngModel)]="caseDataInput.ctnType" [filter]="true" 
+                    [virtualScroll]="true" [style]="{'width':'100%'}">
+                    </p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label for="CaseVolume">{{ "Case Volume" | localize}}</label>
+                    <input  name="txtCaseVolume" class="form-control" min="0" max="99" #caseVolumeNG="ngModel" [(ngModel)]="caseVolume" type="number" oninput="validity.valid||(value='');" required>
+                    <validation-messages [formCtrl]="caseVolumeNG"></validation-messages>
+                </div>
+                <div class="form-group">
+                    <label for="CaseWeight">{{ "Case Weight" | localize}}</label>
+                    <input name="txtCaseWeight" class="form-control" min="0" #caseWeight="ngModel" [(ngModel)]="caseDataInput.ctnGrossWeight" type="number" required>
+                    <validation-messages [formCtrl]="caseWeight"></validation-messages>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Case Seal No." | localize}}</label>
+                    <input name="caseSealNo" class="form-control" [(ngModel)]="caseDataInput.ctnSealNo1" type="text">
+                </div>
+
+                <add-case-po-detail-list #addCasePoDetailList></add-case-po-detail-list>
+
+                <!--
+                <div class="col-12 primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                    <p-table #dataTable
+                        (onLazyLoad)="getData($event)"
+                        [value]="primengTableHelper.records"
+                        selectionMode="multiple"
+                        [(selection)]="selectedPODetail"
+                        rows="{{primengTableHelper.defaultRecordsCountPerPage}}" 
+                        [paginator]="false" 
+                        dataKey="code"
+                        [lazy]="true"
+                        [responsive]="primengTableHelper.isResponsive">
+                        
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:38px">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </th>
+                                <th style="width:80px" [pSortableColumn]="poLineNo">
+                                    {{'Line No' | localize}}
+                                    <p-sortIcon [field]="poLineNo"></p-sortIcon>
+                                </th>
+                                <th style="width:150px" [pSortableColumn]="sku">
+                                    {{'Item Number' | localize}}
+                                    <p-sortIcon [field]="sku"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="skuDescr">
+                                    {{'Description' | localize}}
+                                    <p-sortIcon [field]="skuDescr"></p-sortIcon>
+                                </th>
+                                <th style="width:150px" [pSortableColumn]="orderedQty">
+                                    {{'PO Quantity' | localize}}
+                                    <p-sortIcon [field]="orderedQty"></p-sortIcon>
+                                </th>   
+                                <th [pSortableColumn]="receivedQty">
+                                    {{'Delivered Quantity' | localize}}
+                                    <p-sortIcon [field]="receivedQty"></p-sortIcon>
+                                </th>   
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record="$implicit">
+                            <tr [pSelectableRow]="record">
+                                <td style="width: 38px">
+                                    <p-tableCheckbox [value]="record"></p-tableCheckbox>
+                                </td>
+                                <td>     
+                                    {{ record.poLineNo }}
+                                </td>
+                                <td>     
+                                    {{ record.sku }}
+                                </td>
+                                <td>     
+                                    {{ record.skuDescr }}
+                                </td>
+                                <td>     
+                                    {{ record.orderedQty }}
+                                </td>
+                                <td>     
+                                    {{ record.receivedQty   }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div class="primeng-no-data">
+                        {{'NoData' | localize }}
+                    </div>
+                    <div class="primeng-paging-container">
+                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                            #paginator (onPageChange)="getLineItemDatas($event)"
+                            [totalRecords]="primengTableHelper.totalRecordsCount"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+                </div>
+                -->
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="saving" class="btn btn-secondary"
+                    (click)="close()">{{"Cancel" | localize}}</button>
+                <button *ngIf="!editing" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="save()"
+                    [disabled]="!addCaseForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Save" | localize}}</span>
+                </button>
+                <button *ngIf="editing" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    class="btn btn-primary"
+                    (click)="update()"
+                    [disabled]="!addCaseForm.form.valid || saving ">
+                    <i class="fa fa-save"></i> 
+                    <span>{{"Edit" | localize}}</span>
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

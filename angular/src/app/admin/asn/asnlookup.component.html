@@ -1,0 +1,132 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"ASN Lookup" | localize}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <div class="row mb-2">
+                        <div class="col-sm-12 text-right">
+
+                            <button type="button" class="btn btn-primary" (click)="addASNFormat()"><i
+                                class="fa fa-plus"></i> {{"Add ASN Format" | localize}}</button> 
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center mb-4">
+                        <div class="col-xl-12">
+                            <div class="form-group m-form__group align-items-center">
+                                <div class="input-group">
+                                    <input [(ngModel)]="filterText" name="filterText" autoFocus (keyup.enter)="getASNFormats()"
+                                        class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                        type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="getASNFormats()" class="btn btn-primary" type="submit"><i
+                                                class="flaticon-search-1"
+                                                [attr.aria-label]="l('Search')"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getASNFormats($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                [paginator]="false" [lazy]="true" scrollable="true" ScrollWidth="100%"
+                                responsive="primengTableHelper.isResponsive"
+                                resizableColumns="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:150px">
+                                            {{'Action' | localize}}
+                                        </th>
+                                        <th pSortableColumn="prefix">
+                                            {{'Prefix' | localize}}
+                                            <p-sortIcon field="prefix"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 300px" pSortableColumn="hasDate">
+                                            {{'Has Date' | localize}}
+                                            <p-sortIcon field="hasDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 300px" pSortableColumn="updateDate">
+                                            {{'Update Date' | localize}}
+                                            <p-sortIcon field="updateDate"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr [pSelectableRow]="record">
+                                        <td style="width: 150px">
+                                            <div class="btn-group dropdown" style="width: 100%;" dropdown container="body">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{"Action" | localize}}
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-md" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" (click)="editASNFormat(record.id)"><i class="la la-edit"></i>{{'Edit' | localize}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">{{'Prefix' | localize}}</span>
+                                            {{record.prefix}}
+                                            <span *ngIf="record.isStatic"
+                                                class="kt-badge kt-badge--brand kt-badge--inline"
+                                                data-toggle="tooltip" title="{{'StaticRole_Tooltip' | localize}}"
+                                                data-placement="top">
+                                                {{'Static' | localize}}
+                                            </span>
+                                        </td>
+                                        <td style="width: 300px">
+                                            <span class="ui-column-title"> {{'Has Date' | localize}}</span>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline"
+                                                *ngIf="record.hasDate">{{'Yes' | localize}}</span>
+                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
+                                                *ngIf="!record.hasDate">{{'No' | localize}}</span>
+                                        </td>
+                                        <td style="width: 300px">
+                                            <span class="ui-column-title">{{'Update Date' | localize}}</span>
+                                            {{record.updateDate | momentFormat:'L'}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data"
+                                *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                    #paginator (onPageChange)="getASNFormats($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <addASNFormatModal #addASNFormatModal (modalSave)="getASNFormats()" ></addASNFormatModal>
+</div>
