@@ -37,7 +37,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Aims.Core.Shared\Aims.Core.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
 </Project>

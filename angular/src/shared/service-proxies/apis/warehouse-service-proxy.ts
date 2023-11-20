@@ -8,7 +8,8 @@ import * as moment from 'moment';
 import {
     API_BASE_URL,
     throwException,
-    blobToText
+    blobToText,
+    PagedResultDtoOfNameValueDto
 } from '@shared/service-proxies/service-proxies';
 
 @Injectable()

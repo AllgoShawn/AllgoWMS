@@ -187,5 +187,6 @@ namespace Aims.Warehouses
 
             await _workZoneDapperRepository.ExecuteAsync(Query, para);
         }
+
     }   
 }

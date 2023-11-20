@@ -79,5 +79,30 @@ namespace Aims.Common
                 Name = EditionManager.DefaultEditionName
             };
         }
+
+        public async Task<PagedResultDto<NameValueDto>> getStatusTypes(GetLookupInput input)
+        {
+            string _tenantStatement = $@" @Tenant_Id = {AbpSession.TenantId} ";
+            string _source = $@" @Source = {input.source}";
+            string _lookup_type = $@" @Lookup_Type = {input.lookup_type}";
+
+            if (AbpSession.TenantId == null)
+            {
+                _tenantStatement = " @Tenant_Id IS NULL ";
+            }
+            if(input.source == null)
+            {
+                _source = " @Source IS NULL";
+            }
+            if(input.lookup_type == null)
+            {
+                _lookup_type = " @Lookup_Type IS NULL ";
+            }
+
+            var selectQuery = $@"EXEC [dbo].[getCommonLookup]
+                                {_tenantStatement},
+                                {_source},
+                                {_lookup_type}";
+        }
     }
 }

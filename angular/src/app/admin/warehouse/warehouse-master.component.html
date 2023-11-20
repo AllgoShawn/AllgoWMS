@@ -20,9 +20,6 @@
 
                             <button type="button" class="btn btn-primary" (click)="createWarehouse()"><i
                                 class="fa fa-plus"></i> {{"Create Warehouse" | localize}}</button>
-                            
-                            <button type="button" class="btn btn-primary" (click)="createWarehouseTab()"><i
-                                class="fa fa-plus"></i> {{"Create Warehouse Tab" | localize}}</button>
 
                             <button type="button" class="btn btn-primary" ><i
                                 class="fa fa-sync"></i> {{"Refresh" | localize}}</button>
@@ -69,8 +66,10 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="whseStatusF">{{"Status" | localize}}</label>
-                                        <input id="whseStatusF" type="text" name="whseStatusF" 
-                                            class="form-control" [(ngModel)]="whseStatusFilter">
+                                        <p-dropdown name="statusType" (onChange)="getASNDatas()" 
+                                        [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
+                                        [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}">
+                                        </p-dropdown>
                                     </div>
                                 </div>
                             </div>

@@ -124,6 +124,7 @@ import { PermissionTreeModalComponent } from './shared/permission-tree-modal.com
 // Warehouse
 import { WarehouseMasterComponent } from './warehouse/warehouse-master.component';
 import { CreateWarehouseMasterComponent } from './warehouse/create-warehouse-master.component';
+import { WarehouseDetailsComponent } from './warehouse/warehouse-detail.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -252,7 +253,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         TransferOrderDetailComponent,
         AddItemModalComponent,
         WarehouseMasterComponent,
-        CreateWarehouseMasterComponent
+        CreateWarehouseMasterComponent,
+        WarehouseDetailsComponent
     ],
     exports: [
         AddMemberModalComponent,

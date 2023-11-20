@@ -1687,6 +1687,61 @@ export class CommonLookupServiceProxy {
         }
         return _observableOf<GetDefaultEditionNameOutput>(<any>null);
     }
+
+    getLookup(source:string | undefined, lookup_type:string | undefined): Observable<PagedResultDtoOfNameValueDto> {
+        let url_ = this.baseUrl + "/api/services/app/Warehouse/GetStatus";
+        if (source === null)
+            throw new Error("The parameter 'source' cannot be null.");
+        else if (source !== undefined)
+            url_ += "source=" + encodeURIComponent("" + source) + "&"; 
+        if (lookup_type === null)
+            throw new Error("The parameter 'lookup_type' cannot be null.");
+        else if (lookup_type !== undefined)
+            url_ += "lookup_type=" + encodeURIComponent("" + lookup_type) + "&"; 
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+        
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLookup(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfNameValueDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfNameValueDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetLookup(response: HttpResponseBase): Observable<PagedResultDtoOfNameValueDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+ 
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfNameValueDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfNameValueDto>(<any>null);
+    }
 }
 
 @Injectable()

@@ -30,6 +30,7 @@ import { InventoryBySkuMasterComponent } from './inventory/inventory-master-sku.
 import { TransferOrderMasterComponent } from './transfer-order/transfer-order-master.component';
 import { TransferOrderDetailComponent } from './transfer-order/transfer-order-detail.component';
 import { WarehouseMasterComponent } from './warehouse/warehouse-master.component';
+import { WarehouseDetailsComponent} from './warehouse/warehouse-detail.component';
 
 @NgModule({
     imports: [
@@ -72,6 +73,7 @@ import { WarehouseMasterComponent } from './warehouse/warehouse-master.component
                     { path: 'transfer-order-detail', component: TransferOrderDetailComponent }, 
 
                     { path: 'warehouse', component: WarehouseMasterComponent }, 
+                    { path: 'warehouse-detail', component:WarehouseDetailsComponent},
                     
                     { path: '', redirectTo: 'po', pathMatch: 'full' }
                 ]

@@ -11,6 +11,8 @@ export class CreateWarehouseMasterComponent extends AppComponentBase {
     @ViewChild('createWarehouseMaster', {static: true}) modal: ModalDirective;
 
     active = false;
+
+    //warehouseDataInput: GetWarehouseMasterInput = new GetWarehouseMasterInput();
     
     constructor(
         injector: Injector
@@ -21,6 +23,10 @@ export class CreateWarehouseMasterComponent extends AppComponentBase {
     show() {
         this.active = true;
         this.modal.show();
+    }
+
+    save(): void {
+        
     }
 
     close(): void {
