@@ -60,6 +60,7 @@ import * as TransferOrderApiServiceProxies from './apis/transfer-order-service-p
         ASNApiServiceProxies.ASNServiceProxy,
         InventoryApiServiceProxies.InventoryServiceProxy,
         TransferOrderApiServiceProxies.TransferOrderServiceProxy,
+        ApiServiceProxies.CustomLookupServiceProxy,
 
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }

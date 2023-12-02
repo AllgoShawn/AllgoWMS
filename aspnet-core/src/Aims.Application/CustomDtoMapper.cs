@@ -143,7 +143,8 @@ namespace Aims
             configuration.CreateMap<OrganizationUnitCustom, OrganizationUnitDto>();
 
             //Warehouse
-            //configuration.CreateMap<Warehouse, WarehouseListDto>();
+           //configuration.CreateMap<Warehouse, WarehouseListDto>();
+            configuration.CreateMap<WarehouseMaster, WarehouseMasterDto>();
 
             //WorkZone
             configuration.CreateMap<WorkZone, WorkZoneListDto>();

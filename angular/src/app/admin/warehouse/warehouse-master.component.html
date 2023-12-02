@@ -21,7 +21,7 @@
                             <button type="button" class="btn btn-primary" (click)="createWarehouse()"><i
                                 class="fa fa-plus"></i> {{"Create Warehouse" | localize}}</button>
 
-                            <button type="button" class="btn btn-primary" ><i
+                            <button type="button" class="btn btn-primary" (click)="getWarehouseMasterData()"><i
                                 class="fa fa-sync"></i> {{"Refresh" | localize}}</button>
                         </div>
                     </div>
@@ -30,11 +30,11 @@
                         <div class="col-xl-12">
                             <div class="form-group m-form__group align-items-center">
                                 <div class="input-group">
-                                    <input [(ngModel)]="filterText" name="filterText" autoFocus 
+                                    <input [(ngModel)]="filterText" name="filterText" autoFocus (keyup.enter)="getWarehouseMasterData()"
                                         class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
                                         type="text">
                                     <span class="input-group-btn">
-                                        <button  class="btn btn-primary" type="submit"><i
+                                        <button (click)="getWarehouseMasterData()" class="btn btn-primary" type="submit"><i
                                                 class="flaticon-search-1"
                                                 [attr.aria-label]="l('Search')"></i></button>
                                     </span>    
@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="kt-form">
-                        <form #filterForm="ngForm" >
+                        <form #filterForm="ngForm" (ngSubmit)="getWarehouseMasterData()">
                             <div class="row align-items-center mb-2">
                             </div>
                             
@@ -52,23 +52,23 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="whseCodeF">{{"Warehouse Code" | localize}}</label>
-                                        <input id="whseCodeF" type="text" name="whseCodeF" 
+                                        <input id="whseCodeF" type="text" name="whseCodeF" (keyup.enter)="getWarehouseMasterData()"
                                             class="form-control" [(ngModel)]="whseCodeFilter">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="whseNameF">{{"Warehouse Name" | localize}}</label>
-                                        <input id="whseNameF" type="text" name="whseNameF" 
+                                        <input id="whseNameF" type="text" name="whseNameF" (keyup.enter)="getWarehouseMasterData()"
                                             class="form-control" [(ngModel)]="whseNameFilter">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="whseStatusF">{{"Status" | localize}}</label>
-                                        <p-dropdown name="statusType" (onChange)="getASNDatas()" 
-                                        [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
-                                        [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}">
+                                        <p-dropdown name="statusType" (onChange)="getWarehouseMasterData()" 
+                                        [options]="statusType" [(ngModel)]="statusFilter" [filter]="true" 
+                                        [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec','height':'40px'}">
                                         </p-dropdown>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="primeng-datatable-container"
                             [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable 
+                            <p-table #dataTable (onLazyLoad)="getWarehouseMasterData($event)"
                                 [value]="primengTableHelper.records"
                                 selectionMode="single"
                                 (onRowSelect)="nodeSelect($event)"
@@ -102,70 +102,54 @@
                                 resizableColumns="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="width:150px">
+                                        <th style="width:170px">
                                             {{'Action' | localize}}
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="whseCode">
+                                        <th style="width: 250px" pSortableColumn="whse_code">
                                             {{'Warehouse Code' | localize}}
-                                            <p-sortIcon field="whseCode"></p-sortIcon>
+                                            <p-sortIcon field="whse_code"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="whseName">
+                                        <th style="width: 380px" pSortableColumn="whse_name">
                                             {{'Warehouse Name' | localize}}
-                                            <p-sortIcon field="whseName"></p-sortIcon>
+                                            <p-sortIcon field="whse_name"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="whseStatus">
-                                            {{'Customer' | localize}}
-                                            <p-sortIcon field="whseStatus"></p-sortIcon>
+                                        <th style="width: 250px" pSortableColumn="status">
+                                            {{'Status' | localize}}
+                                            <p-sortIcon field="status"></p-sortIcon>
                                         </th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr [pSelectableRow]="record">
-                                        <td style="width: 150px">
+                                        <td style="width: 170px">
                                             <div  class="btn-group dropdown" style="width: 100%;" dropdown container="body">
                                                 <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
                                                     {{"Action" | localize}}
                                                 </button>
-                                                <div *ngIf="record.asnStatus != 'Shipped'">
+                                                <div>
                                                     <ul class="dropdown-menu dropdown-menu-md" *dropdownMenu>
                                                         <li>
-                                                            <a href="javascript:;" (click)="createASN(record.poNo, record.id)"><i class="la la-edit"></i>{{'Edit' | localize}}</a>
+                                                            <a href="javascript:;" (click)="createWarehouse(record.id)"><i class="la la-edit"></i>{{'Edit' | localize}}</a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:;" (click)="deleteASN(record.asnNo, record.id)"><i class="la la-trash"></i>{{'Remove' | localize}}</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;" (click)="shipASN(record.asnNo, record.id)"><i class="la la-truck"></i>{{'Confirm Ship' | localize}}</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div *ngIf="record.asnStatus === 'Shipped'">
-                                                    <ul class="dropdown-menu dropdown-menu-md" *dropdownMenu>
-                                                        <li class="readonly">
-                                                            <a class="readonly-color" href="javascript:;" (click)="createASN(record.poNo, record.id)"><i class="la la-edit"></i>{{'Edit' | localize}}</a>
-                                                        </li>
-                                                        <li class="readonly">
-                                                            <a class="readonly-color" href="javascript:;" (click)="deleteASN(record.asnNo, record.id)"><i class="la la-trash"></i>{{'Remove' | localize}}</a>
-                                                        </li>
-                                                        <li class="readonly">
-                                                            <a class="readonly-color" href="javascript:;" (click)="shipASN(record.asnNo, record.id)"><i class="la la-truck"></i>{{'Confirm Ship' | localize}}</a>
+                                                            <a href="javascript:;" (click)="deleteWarehouse(record.whse_code, record.whse_name, record.id)"><i class="la la-trash"></i>{{'Remove' | localize}}</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="width: 150px">
+                                        <td style="width: 250px">
                                             <span class="ui-column-title">{{'Warehouse Code' | localize}}</span>
-                                            {{record.whseCode}}
+                                            {{record.whse_code}}
                                         </td>
-                                        <td style="width: 150px">
+                                        <td style="width: 380px">
                                             <span class="ui-column-title">{{'Warehouse Name' | localize}}</span>
-                                            {{record.whseName}}
+                                            {{record.whse_name}}
                                         </td>
-                                        <td style="width: 150px">
+                                        <td style="width: 250px">
                                             <span class="ui-column-title">{{'Status' | localize}}</span>
-                                            {{record.whseStatus}}
+                                            {{record.status}}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -176,7 +160,7 @@
                             </div>
                             <div class="primeng-paging-container">
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
-                                    #paginator 
+                                    #paginator (onPageChange)="getWarehouseMasterData($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>
@@ -191,5 +175,5 @@
             </div>
         </div>
     </div>
-    <createWarehouseMaster #createWarehouseMaster ></createWarehouseMaster>
+    <createWarehouseMaster #createWarehouseMaster (modalSave)="getWarehouseMasterData()"></createWarehouseMaster>
 </div>

@@ -2,135 +2,146 @@
     aria-labelledby="createWarehouseMaster" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #createWarehouseForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active">
+            <form #createWarehouseForm="ngForm" role="form" novalidate class="form-validation" *ngIf="active" >
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <span> {{"Create Warehouse Master" | localize}}</span>
+                        <span *ngIf="warehouseDataInput.id"> {{"Edit Warehouse Master" | localize}} : {{warehouseDataInput.whse_code}}</span>
+                        <span *ngIf="!warehouseDataInput.id"> {{"Create Warehouse Master" | localize}}</span>
                     </h5>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
-                        [disabled]="saving">
-                        <span aria-hidden="true">&times;</span>
+                         [disabled]="saving">
+                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <div class="modal-body">
                     <tabset>
                         <tab heading="{{'Warehouse Detail' | localize}}">
-                            <form class="kt-form">
+                            
                                <div class="form-group">
-                                    <label>{{ "Warehouse Code" | localize}}</label>
-                                    <input id="whseCode" class="form-control" type="text" name="whseCode"  required maxlength="30" required>
+                                    <label><span>{{ "Warehouse Code " | localize}} </span><span *ngIf ="!warehouseDataInput.id" class="mandatory">{{ " * " | localize}}</span></label> 
+                                    <div *ngIf ="!warehouseDataInput.id">
+                                        <input name="whseCode" class="form-control" #whseCode="ngModel" [(ngModel)]="warehouseDataInput.whse_code" required maxlength="30" />
+                                        <validation-messages [formCtrl]="whseCode"></validation-messages>
+                                    </div>
+                                    <div *ngIf ="warehouseDataInput.id">
+                                        <span> {{warehouseDataInput.whse_code || '--' }}</span>
+                                    </div>
                                </div>
-                            </form>
-                            <form class="kt-form">
+                          
                                 <div class="form-group">
-                                     <label>{{ "Warehouse Name" | localize}}</label>
-                                     <input id="whseName" class="form-control" type="text" name="whseName"  required maxlength="100">
+                                     <label><span>{{ "Warehouse Name " | localize}} </span><span *ngIf ="!warehouseDataInput.id" class="mandatory">{{ " * " | localize}}</span></label>
+                                     <div>
+                                        <input name="whseName" class="form-control" #whseName="ngModel" [(ngModel)]="warehouseDataInput.whse_name" required maxlength="30" />
+                                        <validation-messages [formCtrl]="whseName"></validation-messages>
+                                     </div>
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
-                                     <label>{{ "Status" | localize}}</label>
-                                     <p-dropdown name="whseStatus"
-                                     [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
-                                     [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}">
+                                     <label for="status"><span>{{ "Status " | localize}} </span><span *ngIf ="!warehouseDataInput.id" class="mandatory">{{ " * " | localize}}</span></label>
+                                     <p-dropdown *ngIf ="!warehouseDataInput.id" name="whseStatus"
+                                     [options]="statusType" [(ngModel)]="warehouseDataInput.status" [filter]="true" 
+                                     [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}" readonly="readonly">
+                                     </p-dropdown>
+                                     <p-dropdown *ngIf ="warehouseDataInput.id" name="whseStatus"
+                                     [options]="statusType" [(ngModel)]="warehouseDataInput.status" [filter]="true" 
+                                     [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}" >
                                      </p-dropdown>
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Remarks" | localize}}</label>
-                                     <input id="whseRemarks" class="form-control" type="text" name="whseRemarks"  required maxlength="200">
+                                     <input  class="form-control"  name="whseRemarks" [(ngModel)]="warehouseDataInput.remarks" maxlength="200" />
                                 </div>
-                             </form>
+                           
                         </tab>
                         <tab heading="{{'Warehouse Address' | localize}}">
-                            <form class="kt-form">
+                           
                                 <div class="form-group">
                                      <label>{{ "Address" | localize}}</label>
-                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                     <input class="form-control" type="text" name="whseAddress" [(ngModel)]="warehouseDataInput.address" maxlength="200" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "Address 1" | localize}}</label>
-                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                     <input class="form-control" type="text" name="whseAddress1" [(ngModel)]="warehouseDataInput.address1" maxlength="200" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "Address 2" | localize}}</label>
-                                     <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                     <input class="form-control" type="text" name="whseAddress2" [(ngModel)]="warehouseDataInput.address2" maxlength="200" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "City" | localize}}</label>
-                                     <input id="whseCity" class="form-control" type="text" name="whseCity"  required maxlength="50">
+                                     <input id="whseCity" class="form-control" type="text" name="whseCity" [(ngModel)]="warehouseDataInput.city"  maxlength="50" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "State" | localize}}</label>
-                                     <input id="whseState" class="form-control" type="text" name="whseState"  required maxlength="50">
+                                     <input id="whseState" class="form-control" type="text" name="whseState" [(ngModel)]="warehouseDataInput.state" maxlength="50" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "Country" | localize}}</label>
-                                     <input id="whseCountry" class="form-control" type="text" name="whseCountry"  required maxlength="30">
+                                     <input id="whseCountry" class="form-control" type="text" name="whseCountry" [(ngModel)]="warehouseDataInput.country" maxlength="30" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                             
                                 <div class="form-group">
                                      <label>{{ "ZIP" | localize}}</label>
-                                     <input id="whseZip" class="form-control" type="text" name="whseZip"  required maxlength="20">
+                                     <input id="whseZip" class="form-control" type="text" name="whseZip" [(ngModel)]="warehouseDataInput.zip" maxlength="20" />
                                 </div>
-                             </form>
+                             
                         </tab>
                         <tab heading="{{'Warehouse Contact' | localize}}">
-                            <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Contact Title" | localize}}</label>
-                                     <input id="whseContactTitle" class="form-control" type="text" name="whseContactTitle"  required maxlength="50">
+                                     <input id="whseContactTitle" class="form-control" type="text" name="whseContactTitle" [(ngModel)]="warehouseDataInput.contact_title" maxlength="50" />
                                 </div>
-                             </form>
-                            <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Contact Person" | localize}}</label>
-                                     <input id="whseContactPerson" class="form-control" type="text" name="whseContactPerson"  required maxlength="50">
+                                     <input id="whseContactPerson" class="form-control" type="text" name="whseContactPerson" [(ngModel)]="warehouseDataInput.contact" maxlength="50" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Phone Number" | localize}}</label>
-                                     <input id="whsePhoneNo" class="form-control" type="text" name="whsePhoneNo"  required maxlength="50">
+                                     <input id="whsePhoneNo" class="form-control" type="text" name="whsePhoneNo" [(ngModel)]="warehouseDataInput.contact_tel" maxlength="50" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Fax" | localize}}</label>
-                                     <input id="whseFax" class="form-control" type="text" name="whseFax"  required maxlength="50">
+                                     <input id="whseFax" class="form-control" type="text" name="whseFax" [(ngModel)]="warehouseDataInput.contact_fax" maxlength="50" />
                                 </div>
-                             </form>
-                             <form class="kt-form">
+                            
                                 <div class="form-group">
                                      <label>{{ "Email" | localize}}</label>
-                                     <input id="whseEmail" class="form-control" type="text" name="whseEmail"  required maxlength="100">
+                                     <input #whseContactEmail="ngModel" id="whseEmail" class="form-control" type="email" name="whseEmail" [(ngModel)]="warehouseDataInput.contact_email" maxlength="100" email />
+                                     <span class="form-text text-danger">
+                                        <validation-messages [formCtrl]="whseContactEmail"></validation-messages>
+                                    </span>
                                 </div>
-                             </form>
+                            
                         </tab>    
                     </tabset>
                 </div>
                 <div class="modal-footer">
                     <button type="button" [disabled]="saving" class="btn btn-secondary"
                         (click)="close()">{{"Cancel" | localize}}</button>
-                    <button  type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                    <button *ngIf="!warehouseDataInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
                         class="btn btn-primary"
                         (click)="save()"
                         [disabled]="!createWarehouseForm.form.valid || saving ">
                         <i class="fa fa-save"></i> 
                         <span>{{"Save" | localize}}</span>
+                    </button>
+                    <button *ngIf="warehouseDataInput.id" type="submit" [buttonBusy]="saving" [busyText]="l('SavedWithThreeDot')"
+                         class="btn btn-primary"
+                         (click)="update()"
+                         [disabled]="!createWarehouseForm.form.valid || saving ">
+                         <i class="fa fa-save"></i>
+                         <span>{{"Edit" | localize}}</span>
                     </button>
                 </div>
             </form>

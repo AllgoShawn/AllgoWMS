@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities.Auditing;
 using Abp.Domain.Entities;
 
-namespace Aims.Common
+namespace Aims.Custom
 {
     [Table("t_lookup")]
 
@@ -28,7 +28,20 @@ namespace Aims.Common
 
         public decimal locale_id { get; set; }
 
+        [MaxLength(200)]
+        public string udf01 { get; set; }
 
+        [MaxLength(200)]
+        public string udf02 { get; set; }
+
+        [MaxLength(200)]
+        public string udf03 { get; set; }
+
+        [MaxLength(200)]
+        public string udf04 { get; set; }
+
+        [MaxLength(200)]
+        public string remarks { get; set; }
     }
 
 }

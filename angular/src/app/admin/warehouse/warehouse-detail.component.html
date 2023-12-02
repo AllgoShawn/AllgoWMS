@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="busy">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
@@ -43,105 +43,134 @@
                             <tab heading="{{'Warehouse Detail' | localize}}">
                                 <form class="kt-form">
                                    <div class="form-group">
-                                        <label>{{ "Warehouse Code" | localize}}</label>
-                                        <input id="whseCode" class="form-control" type="text" name="whseCode"  required maxlength="30">
+                                        <label class="col-form-label">{{ "Warehouse Code" | localize}}</label>
+                                        <div>
+                                            <span> {{itemInfo.whse_code || '--' }}</span>
+                                        </div>
                                    </div>
                                 </form>
                                 <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Warehouse Name" | localize}}</label>
-                                         <input id="whseName" class="form-control" type="text" name="whseName"  required maxlength="100">
+                                         <label class="col-form-label">{{ "Warehouse Name" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.whse_name || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Status" | localize}}</label>
-                                         <p-dropdown name="whseStatus"
-                                         [options]="statusTypes" [(ngModel)]="statusFilter" [filter]="true" 
-                                         [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}">
-                                         </p-dropdown>
+                                         <label class="col-form-label">{{ "Status" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.status || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Remarks" | localize}}</label>
-                                         <input id="whseRemarks" class="form-control" type="text" name="whseRemarks"  required maxlength="200">
+                                         <label class="col-form-label">{{ "Remarks" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.remarks || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                             </tab>
                             <tab heading="{{'Warehouse Address' | localize}}">
                                 <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Address" | localize}}</label>
-                                         <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                         <label class="col-form-label">{{ "Address" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.address || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Address 1" | localize}}</label>
-                                         <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                         <label class="col-form-label">{{ "Address 1" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.address1 || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Address 2" | localize}}</label>
-                                         <input id="whseAddress" class="form-control" type="text" name="whseAddress"  required maxlength="200">
+                                         <label class="col-form-label">{{ "Address 2" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.address2 || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "City" | localize}}</label>
-                                         <input id="whseCity" class="form-control" type="text" name="whseCity"  required maxlength="50">
+                                         <label class="col-form-label">{{ "City" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.city || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "State" | localize}}</label>
-                                         <input id="whseState" class="form-control" type="text" name="whseState"  required maxlength="50">
+                                         <label class="col-form-label">{{ "State" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.state || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Country" | localize}}</label>
-                                         <input id="whseCountry" class="form-control" type="text" name="whseCountry"  required maxlength="30">
+                                         <label class="col-form-label">{{ "Country" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.country || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "ZIP" | localize}}</label>
-                                         <input id="whseZip" class="form-control" type="text" name="whseZip"  required maxlength="20">
+                                         <label class="col-form-label">{{ "ZIP" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.zip || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                             </tab>
                             <tab heading="{{'Warehouse Contact' | localize}}">
                                 <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Contact Title" | localize}}</label>
-                                         <input id="whseContactTitle" class="form-control" type="text" name="whseContactTitle"  required maxlength="50">
+                                         <label class="col-form-label">{{ "Contact Title" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.contact_title || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                 <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Contact Person" | localize}}</label>
-                                         <input id="whseContactPerson" class="form-control" type="text" name="whseContactPerson"  required maxlength="50">
+                                         <label class="col-form-label">{{ "Contact Person" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.contact || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Phone Number" | localize}}</label>
-                                         <input id="whsePhoneNo" class="form-control" type="text" name="whsePhoneNo"  required maxlength="50">
+                                         <label class="col-form-label">{{ "Phone Number" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.contact_tel || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Fax" | localize}}</label>
-                                         <input id="whseFax" class="form-control" type="text" name="whseFax"  required maxlength="50">
+                                         <label class="col-form-label">{{ "Fax" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.contact_fax || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                                  <form class="kt-form">
                                     <div class="form-group">
-                                         <label>{{ "Email" | localize}}</label>
-                                         <input id="whseEmail" class="form-control" type="text" name="whseEmail"  required maxlength="100">
+                                         <label class="col-form-label">{{ "Email" | localize}}</label>
+                                         <div>
+                                            <span> {{itemInfo.contact_email || '--' }}</span>
+                                        </div>
                                     </div>
                                  </form>
                             </tab>    

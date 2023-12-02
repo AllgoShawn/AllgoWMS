@@ -61,6 +61,10 @@ namespace Aims.EntityFrameworkCore
         public virtual DbSet<TransferOrders.Header> TOHeaders { get; set; }
         public virtual DbSet<TransferOrders.Detail> TODetails { get; set; }
 
+        public virtual DbSet<Custom.Lookup> CustomLookup { get; set; }
+
+        public virtual DbSet<Warehouses.WarehouseMaster> WarehousesWarehouseMasters { get; set; }
+
         public AimsDbContext(DbContextOptions<AimsDbContext> options)
             : base(options)
         {
