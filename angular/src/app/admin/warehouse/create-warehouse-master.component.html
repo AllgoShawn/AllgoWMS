@@ -30,7 +30,7 @@
                                </div>
                           
                                 <div class="form-group">
-                                     <label><span>{{ "Warehouse Name " | localize}} </span><span *ngIf ="!warehouseDataInput.id" class="mandatory">{{ " * " | localize}}</span></label>
+                                     <label><span>{{ "Warehouse Name " | localize}} </span><span class="mandatory">{{ " * " | localize}}</span></label>
                                      <div>
                                         <input name="whseName" class="form-control" #whseName="ngModel" [(ngModel)]="warehouseDataInput.whse_name" required maxlength="30" />
                                         <validation-messages [formCtrl]="whseName"></validation-messages>
@@ -38,7 +38,7 @@
                                 </div>
                              
                                 <div class="form-group">
-                                     <label for="status"><span>{{ "Status " | localize}} </span><span *ngIf ="!warehouseDataInput.id" class="mandatory">{{ " * " | localize}}</span></label>
+                                     <label for="status"><span>{{ "Status " | localize}} </span><span class="mandatory">{{ " * " | localize}}</span></label>
                                      <p-dropdown *ngIf ="!warehouseDataInput.id" name="whseStatus"
                                      [options]="statusType" [(ngModel)]="warehouseDataInput.status" [filter]="true" 
                                      [virtualScroll]="true" [style]="{'width':'100%','border-color':'#e2e5ec'}" readonly="readonly">
