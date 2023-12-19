@@ -37,7 +37,6 @@ export class WarehouseDetailsComponent extends AppComponentBase {
                 this._warehouseMasterService.getWarehouseMastersById(
                     this.warehouseId
                 ).subscribe((result) => {
-        
                     this.itemInfo = result;
                 });
             }

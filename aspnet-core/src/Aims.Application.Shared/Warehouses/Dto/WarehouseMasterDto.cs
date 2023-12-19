@@ -38,5 +38,7 @@ namespace Aims.Warehouses.Dto
         public string contact_title { get; set; }
 
         public string remarks { get; set; }
+
+        public string lookupDesc { get; set; }
     }
 }

@@ -75,5 +75,8 @@ namespace Aims.Warehouses
 
         [MaxLength(200)]
         public string remarks { get; set; }
+
+        [MaxLength(200)]
+        public string lookupDesc { get; set; }
     }
 }

@@ -60,9 +60,13 @@ export class CreateWarehouseMasterComponent extends AppComponentBase {
                         label: result.name
                     });
                 }
-                
+
                 this.statusType = itemNames;
-                this.warehouseDataInput.status =  this.statusType[0].value ;
+
+                if(!this.warehouseDataInput.id) {
+                    this.warehouseDataInput.status =  this.statusType[0].value ;
+                }
+
             }
         )
     }

@@ -693,6 +693,7 @@ export class GetWarehouseMasterInput implements IGetWarehouseMasterInput {
     contact_email!: string | undefined;
     contact_title!: string | undefined;
     remarks!: string | undefined;
+    lookupDesc!: string | undefined;
     id?: number;
     
     constructor(data?: IWarehouseMasterDto) {
@@ -723,6 +724,7 @@ export class GetWarehouseMasterInput implements IGetWarehouseMasterInput {
             this.contact_email = data["contact_email"];
             this.contact_title = data["contact_title"];
             this.remarks = data["remarks"];
+            this.lookupDesc = data["lookupDesc"];
         }
     }
 
@@ -774,6 +776,7 @@ export interface IGetWarehouseMasterInput {
     contact_email: string | undefined;
     contact_title: string | undefined;
     remarks: string | undefined;
+    lookupDesc: string | undefined;
     id?: number;
 }
 
@@ -794,6 +797,7 @@ export interface IWarehouseMasterDto {
     contact_email: string | undefined;
     contact_title: string | undefined;
     remarks: string | undefined;
+    lookupDesc: string | undefined;
     id:number;
 }
 
@@ -862,6 +866,7 @@ export class WarehouseMasterDto implements IWarehouseMasterDto {
     contact_email!: string | undefined;
     contact_title!: string | undefined;
     remarks!: string | undefined;
+    lookupDesc!: string | undefined;
     id!:number;
 
     constructor(data?: IWarehouseMasterDto) {
@@ -891,6 +896,7 @@ export class WarehouseMasterDto implements IWarehouseMasterDto {
             this.contact_email = data["contact_email"];
             this.contact_title = data["contact_title"];
             this.remarks = data["remarks"];
+            this.lookupDesc = data["lookupDesc"];
             this.id = data["id"];
         }
     }
@@ -920,6 +926,7 @@ export class WarehouseMasterDto implements IWarehouseMasterDto {
         data["contact_email"] = this.contact_email;
         data["contact_title"] = this.contact_title;
         data["remarks"] = this.remarks;
+        data["lookupDesc"] = this.lookupDesc;
         data["id"] = this.id;
         return data; 
     }

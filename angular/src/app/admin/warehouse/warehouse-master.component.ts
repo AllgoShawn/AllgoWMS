@@ -90,6 +90,7 @@ export class WarehouseMasterComponent extends AppComponentBase {
                 }
                 
                 this.statusType = itemNames;
+
             }
         )
 
@@ -104,7 +105,6 @@ export class WarehouseMasterComponent extends AppComponentBase {
         }
 
         this.primengTableHelper.showLoadingIndicator();
-        
         this._warehouseService.getWarehouseMasters(
             this.filterText,
             this.whseCodeFilter,
